@@ -1,6 +1,11 @@
 version: 3.0.7-{build}
 
 environment:
+  global:
+    CYG_ROOT: C:\cygwin
+    CYG_MIRROR: http://cygwin.mirror.constant.com
+    CYG_CACHE: C:\cygwin\var\cache\setup
+    CYG_BASH: C:\cygwin\bin\bash
   matrix:
   - GENERATOR: MinGW Makefiles
   - GENERATOR: Visual Studio 14 2015
@@ -17,4 +22,8 @@ before_build:
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "%GENERATOR%" ..
 
-build_script: cmake --build . --config %CONFIGURATION%
+build_script:
+  - cmake --build . --config %CONFIGURATION%
+
+test_script:
+  - cd tests/sqdbg; '%CYG_BASH% test.sh'
