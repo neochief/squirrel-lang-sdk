@@ -1,0 +1,44 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.3)
+PROJECT(squirrel)
+
+SET(CMAKE_CXX_FLAGS "")
+SET(CMAKE_C_FLAGS "")
+
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/output/bin")
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/output/lib")
+SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/output/lib")
+
+## Add include/ to include directories
+
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src/include/ ${CMAKE_CURRENT_BINARY_DIR})
+
+## Build list of source files
+FILE(GLOB SQUIRREL_SOURCES src/squirrel/*.cpp)
+LIST(SORT SQUIRREL_SOURCES)
+ADD_LIBRARY(squirrel ${SQUIRREL_SOURCES})
+
+FILE(GLOB SQSTDLIB_SOURCES src/sqstdlib/*.cpp src/sqstdlib/*.c)
+ADD_LIBRARY(sqstdlib ${SQSTDLIB_SOURCES})
+TARGET_LINK_LIBRARIES(sqstdlib squirrel)
+
+ADD_EXECUTABLE(sq src/sq/sq.c)
+TARGET_LINK_LIBRARIES(sq squirrel)
+TARGET_LINK_LIBRARIES(sq sqstdlib)
+
+ADD_EXECUTABLE(sqdbg src/sqdbg/main.cpp src/sqdbg/sqrdbg.cpp src/sqdbg/sqdbgserver.cpp)
+TARGET_LINK_LIBRARIES(sqdbg squirrel)
+TARGET_LINK_LIBRARIES(sqdbg sqstdlib)
+TARGET_LINK_LIBRARIES(sqdbg sqstdlib)
+
+IF (WIN32)
+	TARGET_LINK_LIBRARIES(sqdbg ws2_32)
+	SET(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++")
+ELSE()
+	TARGET_LINK_LIBRARIES(sqdbg curses)
+ENDIF()
+
+INSTALL(TARGETS squirrel
+		RUNTIME DESTINATION bin
+		ARCHIVE DESTINATION lib
+		LIBRARY DESTINATION lib
+		COMPONENT squirrel)
