@@ -4,8 +4,6 @@
 assert_equals ()          #  If condition false,
 {                         #+ exit from script
                          #+ with appropriate error message.
-  RED='\033[0;31m'
-  NC='\033[0m' # No Color
 
   E_PARAM_ERR=98
   E_ASSERT_FAILED=99
@@ -19,11 +17,9 @@ assert_equals ()          #  If condition false,
 
   if [[ "$1" != *$2* ]]
   then
-    echo -e "$RED"
-    echo -e "Assertion failed (File \"$0\", line $lineno)"
-    echo "  Actual: $1"
-    echo "Expected: $2"
-    echo -e "$NC"
+    >&2 echo -e "Assertion failed (File \"$0\", line $lineno)"
+    >&2 echo "  Actual: $1"
+    >&2 echo "Expected: $2"
     exec 3>&-
     kill $4
     exit $E_ASSERT_FAILED
