@@ -10,9 +10,7 @@ configuration: Debug
 
 before_build:
   # Workaround for CMake not wanting sh.exe on PATH for MinGW
-  - mv "C:/Program Files (x86)/Git/bin/sh.exe" "C:/Program Files (x86)/Git/bin/shxx.exe"
-  - mv C:/Program Files/Git/bin/sh.exe C:/Program Files/Git/bin/shxx.exe
-  - set PATH=C:\MinGW\bin;%PATH%
+  - set PATH=C:\MinGW\bin
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=%CONFIGURATION% -G "%GENERATOR%" ..
