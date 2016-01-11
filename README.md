@@ -1,5 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/69nfpsujg5qg0jq3?svg=true)](https://ci.appveyor.com/project/neochief/squirrel-lang-sdk)
 
+[![Circle CI](https://circleci.com/gh/neochief/squirrel-lang-sdk.svg?style=svg)](https://circleci.com/gh/neochief/squirrel-lang-sdk)
+
 # What is this?
 
 This repository was created to ease the cross-platform use of the Squirrel language. Official distribution of Squirrel
